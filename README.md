@@ -1,4 +1,4 @@
 # ball
 My first Egret Game   
    
-[live Demo](http://sandbox.runjs.cn/show/k0psqtfd)
+[live Demo](http://www.iampua.com/pui/ball.html)
