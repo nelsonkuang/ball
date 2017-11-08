@@ -53,11 +53,11 @@ class Main extends egret.DisplayObjectContainer {
     }
     private initBallGame():void{
         // Ball
-        var _ball: Ball = new Ball(10,this.stage.stageHeight / 2);
+        var _ball: Ball = new Ball(-25,this.stage.stageHeight / 2 - 25, 1, -5);
         this.addChild(_ball);
-        _ball.speedY = -5;
-        _ball.speedX = 1;
-        _ball.move();
+        // _ball.speedY = -5;
+        // _ball.speedX = 1;
+        // _ball.move();
 
         // Obstacle
         var _obstacle_1: Obstacle = new Obstacle(this.stage.stageWidth / 2,this.stage.stageHeight / 2,150,10);
@@ -72,52 +72,60 @@ class Main extends egret.DisplayObjectContainer {
         var _sc: ScoreCard = new ScoreCard();
         this.addChild(_sc);
         this.setChildIndex(_sc,11);
-        _sc.countDown(60,() => {
+        var _This = this;
+        _sc.countDown(60,function() {
             _ball.stop();
-            _sc.showResult(() => {
-                window.location.reload();
+            _sc.showResult(function() {
+                _This.removeChildren();
+                _This.initBallGame();
             });
         });
 
         // HitTest
-        var _ht: HitTest = new HitTest(_ball);
-        _ht.watchHitOnTop(_obstacle_1,() => {
+        var _ht: HitTest = new HitTest(_ball, 1);
+        _ht.watchHitOnTop(_obstacle_1,function() {
             if(_ball.speedY >= 0) {
                 _ball.speedY = -5;//重设垂直方向速度
                 _obstacle_1.onHited();
             }
         });
-        _ht.watchHitOnTop(_obstacle_2,() => {
+        _ht.watchHitOnTop(_obstacle_2,function() {
             if(_ball.speedY >= 0) {
                 _ball.speedY = -5;//重设垂直方向速度
                 _obstacle_2.onHited();
             }
         });
-        _ht.watchHitOnTop(_obstacle_3,() => {
+        _ht.watchHitOnTop(_obstacle_3,function() {
             if(_ball.speedY >= 0) {
                 _ball.speedY = -5;//重设垂直方向速度
                 _obstacle_3.onHited();
             }
         });
-        _ht.watchHitOnLeftNRightEdge(this.stage.stageWidth,() => {
+        _ht.watchHitOnLeftNRightEdge(_This.stage.stageWidth,function(){
             _ball.speedX *= -1;
         });
 
-        _ht.watchHitOnTopNBottomEdge(this.stage.stageHeight,() => {
-            _ball.setX(10);
-            _ball.setY(this.stage.stageHeight / 2 - 10);
+        _ht.watchHitOnTopNBottomEdge(_This.stage.stageHeight,function() {
+            _ball.setX(25);
+            _ball.setY(_This.stage.stageHeight / 2 - 25);
             _ball.speedY = -5;
             _ball.speedX = 1;
-            _sc.add(1);
-        },() => {
-            _ball.setX(10);
-            _ball.setY(this.stage.stageHeight / 2 - 10);
+            if(_ht.tSkipTimes > 0) {// 特殊处理，修复addchild图片出现的bug
+                _ht.tSkipTimes--;            
+            }else{
+                _sc.add(1);  
+            }
+
+        },function() {
+            _ball.setX(25);
+            _ball.setY(_This.stage.stageHeight / 2 - 25);
             _ball.speedY = -5;
             _ball.speedX = 1;
         });
         // DeviceOrientationTest
         var _dot: DeviceOrientationTest = new DeviceOrientationTest(function(angle: number) {
-            _ball.speedX -= angle % 10 / 10;
+            _ball.speedX -= angle % 10 / 5;
+            _ball.rotateSpeed -= angle % 10 * 3;
         });          
     }
     /**

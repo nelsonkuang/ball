@@ -18,6 +18,11 @@
 					"isFolder":false,
 					"key":"egret_icon_png",
 					"name":"egret_icon_png"
+				},
+				{
+					"isFolder":false,
+					"key":"q_png",
+					"name":"q_png"
 				}
 			]
 		}

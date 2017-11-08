@@ -15,7 +15,7 @@ class Obstacle extends egret.DisplayObjectContainer {
             This.shape.graphics.drawRect(0,0,width,height);
             This.shape.graphics.endFill(); 
             This.shape.anchorOffsetX = This.shape.width / 2;
-            This.shape.anchorOffsetY = -1 * This.shape.height / 2;            
+            This.shape.anchorOffsetY = This.shape.height;            
             This.shape.x = x;
             This.shape.y = y;
         },This);      	

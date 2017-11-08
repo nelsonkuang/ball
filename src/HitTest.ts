@@ -5,9 +5,11 @@
  */
 class HitTest {
     private ball:Ball;
+    public tSkipTimes: number = 1;// 特殊处理，修复addchild图片出现的bug
     
-    constructor(b: Ball) {
+    constructor(b: Ball, tSkipTimes: number = 1) {
         this.ball = b;
+        this.tSkipTimes = tSkipTimes;
 	}
     public watchHitOnTop(o:Obstacle,callback:Function):void{
         var This = this;
@@ -47,7 +49,9 @@ class HitTest {
             var ballT = This.ball.shape.y - This.ball.shape.height / 2,
                 ballB = This.ball.shape.y + This.ball.shape.height / 2;
             if(ballT < -1 * This.ball.shape.height) {
-                onTop();
+                if(This.ball.shape.height != 0){ // 特殊处理，修复addchild图片出现的bug
+                    onTop();              
+                }
             } else if(ballB > edgeY + This.ball.shape.height){
                 onBottom();
             }
